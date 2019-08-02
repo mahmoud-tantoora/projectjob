@@ -6,7 +6,9 @@ import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -32,11 +34,25 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     public boolean state=true;
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private RequestQueue requestQueue;
     /////////////////
     private MyPagerAdapter mFragmentAdapter;
     private ViewPager mViewPager;
@@ -76,28 +92,55 @@ public class MainActivity extends AppCompatActivity {
                  {
                      state=false;
                      if(mViewPager.getCurrentItem()==0)
-                     {
-                         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
-                         Itemdata itemdata[]={
-                                 new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                                 new Itemdata("scont","this type to show for you that i can make racycler view without use a picture","detail2","number worker",1000),
-                                 new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                                 new Itemdata("scont","this type to show for you that i can make racycler view without use a picture","detail2","number worker",1000),
-                                 new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                                 new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.b),
-                                 new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                                 new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.d),
-                                 new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                                 new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.b),
-                                 new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                                 new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.d),
-                                 new Itemdata("thread","this is first picture in my app","detail2","number worker",R.drawable.s)
-                         };
+                     {     try {
+                         final RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
+                         recyclerView.setHasFixedSize(true);
+
+                         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+                         String url = "http://my-app-ammar.000webhostapp.com/getall_opportunity.php";
+                         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                                 new Response.Listener<JSONObject>() {
+                                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                     @Override
+                                     public void onResponse(JSONObject response) {
+                                         try {
+
+                                             JSONArray jsonArray = response.getJSONArray("sss");
+                                             Itemdata []items = new  Itemdata[jsonArray.length()];
+                                             for (int i = 0; i < jsonArray.length(); i++) {
+                                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                                 String jopname = jsonObject.getString("jop_name");
+                                                 String jopdesc = jsonObject.getString("jop_describtion");
+                                                 String numberworker = jsonObject.getString("number_workers");
+                                                 String namecompany = jsonObject.getString("name");
+                                                 items[i] = new Itemdata(namecompany,jopname, jopdesc,numberworker,R.drawable.a);
+                                             }
+                                             //   Adapter adapter = new Adapter(MainActivity.this,arrayList_opp);
+                                             //   recyclerView.setAdapter(adapter);
+                                             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                             MyAdapter myAdapter=new MyAdapter(items,MainActivity.this);
+                                             recyclerView.setAdapter(myAdapter);
+                                             recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                         } catch (JSONException e) {
+                                             Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                                         }
+                                     }
+                                 }, new Response.ErrorListener() {
+                             @Override
+                             public void onErrorResponse(VolleyError error) {
+                                 Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+
+                             }
+                         });
+                         requestQueue.add(request);
+
                          //new gridLayoutManager(this,2)
-                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                         MyAdapter myAdapter=new MyAdapter(itemdata,MainActivity.this);
-                         recyclerView.setAdapter(myAdapter);
-                         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                     }catch (Exception e){}
+
+
                      }
                      else  if(mViewPager.getCurrentItem()==1)
                      {
@@ -116,27 +159,55 @@ public class MainActivity extends AppCompatActivity {
 
                  if(mViewPager.getCurrentItem()==0)
                  {
-                     RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
-                     Itemdata itemdata[]={
-                         new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                         new Itemdata("scont","this type to show for you that i can make racycler view without use a picture","detail2","number worker",1000),
-                         new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                         new Itemdata("scont","this type to show for you that i can make racycler view without use a picture","detail2","number worker",1000),
-                         new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                         new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.b),
-                         new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                         new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.d),
-                         new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                         new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.b),
-                         new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                         new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.d),
-                         new Itemdata("thread","this is first picture in my app","detail2","number worker",R.drawable.s)
-                 };
-                     //new gridLayoutManager(this,2)
-                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                     MyAdapter myAdapter=new MyAdapter(itemdata,MainActivity.this);
-                     recyclerView.setAdapter(myAdapter);
-                     recyclerView.setItemAnimator(new DefaultItemAnimator());
+                     try {
+                         final RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
+                         recyclerView.setHasFixedSize(true);
+
+                         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+                         String url = "http://my-app-ammar.000webhostapp.com/getall_opportunity.php";
+                         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                                 new Response.Listener<JSONObject>() {
+                                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                     @Override
+                                     public void onResponse(JSONObject response) {
+                                         try {
+
+                                             JSONArray jsonArray = response.getJSONArray("sss");
+                                             Itemdata []items = new  Itemdata[jsonArray.length()];
+                                             for (int i = 0; i < jsonArray.length(); i++) {
+                                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                                 String jopname = jsonObject.getString("jop_name");
+                                                 String jopdesc = jsonObject.getString("jop_describtion");
+                                                 String numberworker = jsonObject.getString("number_workers");
+                                                 String namecompany = jsonObject.getString("name");
+                                                 items[i] = new Itemdata(namecompany,jopname, jopdesc,numberworker,R.drawable.a);
+                                             }
+                                             //   Adapter adapter = new Adapter(MainActivity.this,arrayList_opp);
+                                             //   recyclerView.setAdapter(adapter);
+                                             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                             MyAdapter myAdapter=new MyAdapter(items,MainActivity.this);
+                                             recyclerView.setAdapter(myAdapter);
+                                             recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                         } catch (JSONException e) {
+                                             Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                                         }
+                                     }
+                                 }, new Response.ErrorListener() {
+                             @Override
+                             public void onErrorResponse(VolleyError error) {
+                                 Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+
+                             }
+                         });
+                         requestQueue.add(request);
+
+                         //new gridLayoutManager(this,2)
+
+                     }catch (Exception e){}
+
+
                  }
                  else  if(mViewPager.getCurrentItem()==1)
                  {
@@ -154,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
              }
          });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -188,109 +260,211 @@ public class MainActivity extends AppCompatActivity {
 
     public void posts_company(MenuItem item) {
         mViewPager.setCurrentItem(0);
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
-        Itemdata itemdata[]={
-                new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                new Itemdata("scont","this type to show for you that i can make racycler view without use a picture","detail2","number worker",1000),
-                new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                new Itemdata("scont","this type to show for you that i can make racycler view without use a picture","detail2","number worker",1000),
-                new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.b),
-                new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.d),
-                new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.a),
-                new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.b),
-                new Itemdata("first","this is first picture in my app","detail2","number worker",R.drawable.c),
-                new Itemdata("scont","this is first picture in my app","detail2","number worker",R.drawable.d),
-                new Itemdata("thread","this is first picture in my app","detail2","number worker",R.drawable.s)
-        };
+        try {
+            final RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
+            recyclerView.setHasFixedSize(true);
 
-        //new gridLayoutManager(this,2)
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        MyAdapter myAdapter=new MyAdapter(itemdata,MainActivity.this);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+            String url = "http://my-app-ammar.000webhostapp.com/getall_opportunity.php";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                JSONArray jsonArray = response.getJSONArray("sss");
+                                Itemdata []items = new  Itemdata[jsonArray.length()];
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String jopname = jsonObject.getString("jop_name");
+                                    String jopdesc = jsonObject.getString("jop_describtion");
+                                    String numberworker = jsonObject.getString("number_workers");
+                                    String namecompany = jsonObject.getString("name");
+                                    items[i] = new Itemdata(namecompany,jopname, jopdesc,numberworker,R.drawable.a);
+                                }
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                MyAdapter myAdapter=new MyAdapter(items,MainActivity.this);
+                                recyclerView.setAdapter(myAdapter);
+                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            } catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+
+                }
+            });
+            requestQueue.add(request);
+
+            //new gridLayoutManager(this,2)
+
+        }catch (Exception e){}
+
         dl.closeDrawers();
         dl.animate();
     }
 
     public void worker_profile(MenuItem item) {
         mViewPager.setCurrentItem(0);
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
-        Itemdata_profile itemdata_pro[]={
-                new Itemdata_profile("Mahmoud Tantora","Syria","enginring software",R.drawable.a),
-                new Itemdata_profile("Ammar Kiali","Syria","enginring software",R.drawable.s),
-                new Itemdata_profile("Mohammad Ali","Syria","enginring software",R.drawable.c),
-                new Itemdata_profile("Ali Mahmoud","Syria","enginring software",R.drawable.d),
-                new Itemdata_profile("Ahmad Saeed","Syria","enginring software",R.drawable.a),
-                new Itemdata_profile("Zaeed Al_Ahmad","Syria","enginring software",R.drawable.b),
-                new Itemdata_profile("Abo Baker","Syria","enginring software",R.drawable.c),
-                new Itemdata_profile("Abo Zaeed","Syria","enginring software",R.drawable.d),
-                new Itemdata_profile("Mohmmad Kialy","Syria","enginring software",R.drawable.a),
-                new Itemdata_profile("Khalid Al_Yousf","Syria","enginring software",R.drawable.b),
-                new Itemdata_profile("Maohmmad Al_Aliway","Syria","enginring software",R.drawable.c),
-                new Itemdata_profile("Diaa Omar","Syria","enginring software",R.drawable.d),
-                new Itemdata_profile("Abd Al_kareem","Syria","enginring software",R.drawable.s)
-        };
+        try {
+            final RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
+            recyclerView.setHasFixedSize(true);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+            String url = "http://my-app-ammar.000webhostapp.com/getinfo_worker.php";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                JSONArray jsonArray = response.getJSONArray("sss");
+                                Itemdata_profile []items = new  Itemdata_profile[jsonArray.length()];
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String first_name = jsonObject.getString("first_name");
+                                    String last_name = jsonObject.getString("last_name");
+                                    String Country = jsonObject.getString("Country");
+                                    String studying = jsonObject.getString("studying");
+                                    items[i] = new Itemdata_profile(first_name +" "+last_name, Country,studying,R.drawable.a);
+                                }
+
+                                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+                                My_Adapter_Profile myAdapter=new My_Adapter_Profile(items,MainActivity.this);
+                                recyclerView.setAdapter(myAdapter);
+                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            } catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+
+                }
+            });
+            requestQueue.add(request);
+
+            //new gridLayoutManager(this,2)
+
+        }catch (Exception e){}
         //new GridLayoutManager(this,2)
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        My_Adapter_Profile myAdapter=new My_Adapter_Profile(itemdata_pro,MainActivity.this);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         dl.closeDrawers();
         dl.animate();
     }
 
     public void project(MenuItem item) {
         mViewPager.setCurrentItem(0);
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
-        itemdata_project[] projects={
-                new itemdata_project("Mahmoud Tantora","1000$","enginring software",R.drawable.a),
-                new itemdata_project("Ammar Kiali","200$","enginring software",R.drawable.s),
-                new itemdata_project("Mohammad Ali","300$","enginring software",R.drawable.c),
-                new itemdata_project("Ali Mahmoud","1500$","enginring software",R.drawable.d),
-                new itemdata_project("Ahmad Saeed","2500$","enginring software",R.drawable.a),
-                new itemdata_project("Zaeed Al_Ahmad","100$","enginring software",R.drawable.b),
-                new itemdata_project("Abo Baker","3200$","enginring software",R.drawable.c),
-                new itemdata_project("Abo Zaeed","2500$","enginring software",R.drawable.d),
-                new itemdata_project("Mohmmad Kialy","2500$","enginring software",R.drawable.a),
-                new itemdata_project("Khalid Al_Yousf","2500$","enginring software",R.drawable.b),
-                new itemdata_project("Maohmmad Al_Aliway","2500$","enginring software",R.drawable.c),
-                new itemdata_project("Diaa Omar","2500$","enginring software",R.drawable.d),
-                new itemdata_project("Abd Al_kareem","2500$","enginring software",R.drawable.s)
-        };
-        //new GridLayoutManager(this,2)
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        My_Adapter_project myAdapter=new My_Adapter_project(projects,MainActivity.this);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        try {
+            final RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
+            recyclerView.setHasFixedSize(true);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+            String url = "http://my-app-ammar.000webhostapp.com/getall_projectn.php";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                JSONArray jsonArray = response.getJSONArray("sss");
+                                itemdata_project []items = new  itemdata_project[jsonArray.length()];
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String first_name = jsonObject.getString("first_name");
+                                    String last_name = jsonObject.getString("last_name");
+                                    String describtion = jsonObject.getString("describtion");
+                                    String cost = jsonObject.getString("cost");
+                                    String time = jsonObject.getString("time");
+                                    items[i] = new itemdata_project(first_name,last_name, cost,describtion,time,R.drawable.a);
+                                }
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                My_Adapter_project myAdapter=new My_Adapter_project(items,MainActivity.this);
+                                recyclerView.setAdapter(myAdapter);
+                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            } catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+
+                }
+            });
+            requestQueue.add(request);
+
+            //new gridLayoutManager(this,2)
+
+        }catch (Exception e){}
         dl.closeDrawers();
         dl.animate();
     }
 
     public void company(MenuItem item) {
         mViewPager.setCurrentItem(0);
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
-        Itemdata_profile itemdata_pro[]={
-                new Itemdata_profile("Al Borak","Syria","enginring software",R.drawable.a),
-                new Itemdata_profile("Al Mostaql","Syria","enginring software",R.drawable.s),
-                new Itemdata_profile("Antaliq","Syria","enginring software",R.drawable.c),
-                new Itemdata_profile("Google","Syria","enginring software",R.drawable.d),
-                new Itemdata_profile("Yahoo","Syria","enginring software",R.drawable.a),
-                new Itemdata_profile("Amazon","Syria","enginring software",R.drawable.b),
-                new Itemdata_profile("Samsung","Syria","enginring software",R.drawable.c),
-                new Itemdata_profile("Hwawy","Syria","enginring software",R.drawable.d),
-                new Itemdata_profile("Kialy","Syria","enginring software",R.drawable.a),
-                new Itemdata_profile("Orange","Syria","enginring software",R.drawable.b),
-                new Itemdata_profile("Maohmmad Al_Aliway","Syria","enginring software",R.drawable.c),
-                new Itemdata_profile("Diaa Omar","Syria","enginring software",R.drawable.d),
-                new Itemdata_profile("Abd Al_kareem","Syria","enginring software",R.drawable.s)
-        };
+
+        try {
+            final RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
+            recyclerView.setHasFixedSize(true);
+
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
+            String url = "http://my-app-ammar.000webhostapp.com/getinfo_company.php";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                JSONArray jsonArray = response.getJSONArray("sss");
+                                Itemdata_profile []items = new  Itemdata_profile[jsonArray.length()];
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String name = jsonObject.getString("name");
+                                    String specializing = jsonObject.getString("specializing");
+                                    String Country = jsonObject.getString("Country");
+
+                                    items[i] = new Itemdata_profile(name, Country,specializing,R.drawable.a);
+                                }
+                                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+                                My_Adapter_Profile myAdapter=new My_Adapter_Profile(items,MainActivity.this);
+                                recyclerView.setAdapter(myAdapter);
+                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            } catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+
+                }
+            });
+            requestQueue.add(request);
+
+            //new gridLayoutManager(this,2)
+
+        }catch (Exception e){}
         //new GridLayoutManager(this,2)
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        My_Adapter_Profile myAdapter=new My_Adapter_Profile(itemdata_pro,MainActivity.this);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         dl.closeDrawers();
         dl.animate();
     }

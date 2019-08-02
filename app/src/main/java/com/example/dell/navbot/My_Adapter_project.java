@@ -33,9 +33,10 @@ public class My_Adapter_project extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         My_Adapter_project.MyViewHolderProject myViewHolderProject = (My_Adapter_project.MyViewHolderProject) holder;
-        myViewHolderProject.name.setText(itemdata_projects[position].name);
-        myViewHolderProject.money.setText(itemdata_projects[position].money);
+        myViewHolderProject.name.setText(itemdata_projects[position].name+" "+itemdata_projects[position].namelast);
+        myViewHolderProject.money.setText(itemdata_projects[position].money+"$");
         myViewHolderProject.desc.setText(itemdata_projects[position].desc);
+        myViewHolderProject.time.setText(itemdata_projects[position].time+" Months");
         myViewHolderProject.image_project.setImageResource(itemdata_projects[position].image);
         myViewHolderProject.card_project.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +54,7 @@ public class My_Adapter_project extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     public class MyViewHolderProject extends RecyclerView.ViewHolder {
-        public TextView name, money, desc;
+        public TextView name, money, desc,time;
         public CardView card_project;
         public ImageView image_project;
 
@@ -63,6 +64,7 @@ public class My_Adapter_project extends RecyclerView.Adapter<RecyclerView.ViewHo
             money = (TextView) itemView.findViewById(R.id.money_project);
             desc = (TextView) itemView.findViewById(R.id.descreption_project);
             card_project = (CardView) itemView.findViewById(R.id.card_project);
+            time = (TextView) itemView.findViewById(R.id.time_project);
             image_project = (ImageView) itemView.findViewById(R.id.image_project);
         }
     }
