@@ -35,6 +35,11 @@ public class sing_in extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     signup();
+                    Intent intent = new Intent(getApplicationContext(), cv_woker.class);
+                    // startActivity(intent);
+                    startActivityForResult(intent, 1);
+                    finish();
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
             });
 
