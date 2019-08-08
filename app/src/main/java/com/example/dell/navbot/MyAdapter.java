@@ -1,6 +1,7 @@
 package com.example.dell.navbot;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -21,9 +22,17 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     {
         this.context=context;
         this.itemdata=itemdata;
+        this.itemdata[0]=null;
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType==255)
+        {
+            View craetepost = LayoutInflater.from(parent.getContext()).inflate(R.layout.createpost, null);
+            MyViewHoldercreatepost crate_post = new MyViewHoldercreatepost(craetepost);
+            return crate_post;
+        }
+        else
             if (viewType == 1000) {
                 View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_recycler_witout_image, null);
                 MyViewHolderWithoutImg withoutImg = new MyViewHolderWithoutImg(itemLayoutView);
@@ -38,6 +47,19 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
             int viewtype = getItemViewType(position);
+        if(position==0)
+        {
+            MyViewHoldercreatepost createpost = (MyViewHoldercreatepost) holder;
+            createpost.create_post.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // create post here
+                    Intent intent=new Intent(context,createpost.class);
+                    context.startActivity(intent);
+                }
+            });
+        }
+        else {
             if (viewtype == 1000) {
                 MyViewHolderWithoutImg withoutimage = (MyViewHolderWithoutImg) holder;
                 withoutimage.rec_title.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -61,6 +83,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 });
             }
+        }
     }
 
     @Override
@@ -70,9 +93,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if(itemdata[position].image==1000)
+        if(position==0) return 255;
+        else if(itemdata[position].image==1000)
             return 1000;
-        else
         return super.getItemViewType(position);
     }
 
@@ -122,6 +145,16 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             comment=(Button)itemView.findViewById(R.id.comment_item);
             send_order=(Button)itemView.findViewById(R.id.massage_item);
             card=(CardView)itemView.findViewById(R.id.card_item);
+        }
+    }
+    public class MyViewHoldercreatepost extends RecyclerView.ViewHolder
+    {
+        public Button create_post;
+
+        public MyViewHoldercreatepost(View itemView) {
+            super(itemView);
+            create_post=(Button)itemView.findViewById(R.id.create_post);
+
         }
     }
 

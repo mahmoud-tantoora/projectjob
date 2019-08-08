@@ -31,10 +31,16 @@
             android:name=".profile"
             android:theme="@style/AppTheme.Dark" />
         <activity
+            android:name=".create_group"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
             android:name=".createpost"
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".create_project"
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".cv_woker"

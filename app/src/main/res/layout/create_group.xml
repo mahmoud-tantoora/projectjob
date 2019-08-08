@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -18,17 +17,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <EditText
-                android:id="@+id/num_worker_post"
+                android:id="@+id/name_group"
                 android:layout_width="330dp"
                 android:layout_height="70dp"
                 android:textColorHint="#fff"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                android:hint="@string/write_number_worker_needed"
+                android:hint="write name group"
                 android:textAlignment="center" />
 
             <EditText
-                android:id="@+id/descreption_work"
+                android:id="@+id/descreption_group"
                 android:layout_width="330dp"
                 android:layout_height="150dp"
                 android:textColorHint="#fff"
@@ -38,7 +37,7 @@
                 android:textAlignment="center" />
 
             <ImageView
-                android:id="@+id/imagepost"
+                android:id="@+id/imagegroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -48,7 +47,7 @@
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:textColor="#59a9ff"
-                android:onClick="chose_image"
+                android:onClick="chose_imageee"
                 android:layout_gravity="center"
                 android:textAlignment="center"
                 android:text="@string/choses_image"
@@ -72,19 +71,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
             </Spinner>
-
+            <TextView
+                android:id="@+id/chose_member"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:textSize="18dp"
+                android:textColorHint="#fff"
+                android:hint="shose member of group"
+                android:textAlignment="center" />
+            <ListView
+                android:id="@+id/list_woker"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:textSize="18dp">
+            </ListView>
             <Button
-                android:id="@+id/btn_post"
+                android:id="@+id/btn_group"
                 android:layout_width="330dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:onClick="up_post"
+                android:onClick="create_group"
                 android:textAlignment="center"
                 android:layout_marginTop="40dp"
                 android:background="#1763ad"
                 android:textColor="#fff"
                 android:textSize="22dp"
-                android:text="@string/create_post"
+                android:text="create_group"
                 />
         </LinearLayout>
 

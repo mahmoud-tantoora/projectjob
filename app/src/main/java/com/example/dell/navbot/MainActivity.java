@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent = new Intent(getApplicationContext(), login.class);
-        // startActivity(intent);
+       /* Intent intent = new Intent(getApplicationContext(), login.class);
         startActivityForResult(intent, 1);
         finish();
-        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);*/
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFragmentAdapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
-                                My_Adapter_Profile myAdapter=new My_Adapter_Profile(items,MainActivity.this);
+                                My_Adapter_Profile myAdapter=new My_Adapter_Profile(items,MainActivity.this,false);
                                 recyclerView.setAdapter(myAdapter);
                                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                             } catch (JSONException e) {
@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
                                     items[i] = new Itemdata_profile(name, Country,specializing,R.drawable.a);
                                 }
                                 recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
-                                My_Adapter_Profile myAdapter=new My_Adapter_Profile(items,MainActivity.this);
+                                My_Adapter_Profile myAdapter=new My_Adapter_Profile(items,MainActivity.this,false);
                                 recyclerView.setAdapter(myAdapter);
                                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                             } catch (JSONException e) {
@@ -475,6 +475,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void groups(MenuItem item) {
+
+        mViewPager.setCurrentItem(0);
+        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler);
+        Itemdata_profile itemdata_pro[]={
+                new Itemdata_profile("Mahmoud Tantora","5","enginring software",R.drawable.a),
+                new Itemdata_profile("Ammar Kiali","4","enginring software",R.drawable.s),
+                new Itemdata_profile("Mohammad Ali","7","enginring software",R.drawable.c),
+                new Itemdata_profile("Ali Mahmoud","9","enginring software",R.drawable.d),
+                new Itemdata_profile("Ahmad Saeed","3","enginring software",R.drawable.a),
+                new Itemdata_profile("Zaeed Al_Ahmad","2","enginring software",R.drawable.b),
+                new Itemdata_profile("Abo Baker","34","enginring software",R.drawable.c),
+                new Itemdata_profile("Abo Zaeed","54","enginring software",R.drawable.d),
+                new Itemdata_profile("Mohmmad Kialy","22","enginring software",R.drawable.a),
+                new Itemdata_profile("Khalid Al_Yousf","11","enginring software",R.drawable.b),
+                new Itemdata_profile("Maohmmad Al_Aliway","23","enginring software",R.drawable.c),
+                new Itemdata_profile("Diaa Omar","Syria","34 ",R.drawable.d),
+                new Itemdata_profile("Abd Al_kareem","Syria","34 ",R.drawable.s)
+        };
+        //new GridLayoutManager(this,2)
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        My_Adapter_Profile myAdapter=new My_Adapter_Profile(itemdata_pro,MainActivity.this,true);
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         dl.closeDrawers();
         dl.animate();
     }
@@ -491,10 +514,6 @@ public class MainActivity extends AppCompatActivity {
         dl.animate();
     }
 
-    public void create_post(MenuItem item) {
-        Intent intent=new Intent(MainActivity.this,createpost.class);
-        startActivity(intent);
-    }
 
 
 }

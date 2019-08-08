@@ -2,14 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-     android:id="@+id/post"
-        android:title="@string/Create_post"
-        android:onClick="create_post"
-        android:icon="@drawable/createpost">
-
-    </item>
-
     <item android:id="@+id/jop"
         android:title="@string/jobs"
         android:onClick="posts_company"
