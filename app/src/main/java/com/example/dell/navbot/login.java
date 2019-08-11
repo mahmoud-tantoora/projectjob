@@ -16,6 +16,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,6 +52,47 @@ public class login extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     login();
+                    String Url = "http://my-app-ammar.000webhostapp.com/login.php";
+                    final String email = _emailText.getText().toString().trim();
+                    final String password = _passwordText.getText().toString().trim();
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try{
+                                JSONObject jsonObject = new JSONObject(response);
+                                String  success = jsonObject.getString("response");
+                                if(!success.equals("ER"))
+                                {
+                                    Toast.makeText(getApplicationContext(),"Welcome"+success,Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    //  intent.putExtra("id_email",success);
+                                    startActivity(intent);
+
+                                }else {Toast.makeText(getApplicationContext(),"The Information Not Correct",Toast.LENGTH_SHORT).show();}
+
+                            }catch (Exception e)
+                            {
+                                Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String,String> params = new HashMap<>();
+
+                            params.put("email",email);
+                            params.put("password",password);
+                            return params;
+                        }
+                    };
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue.add(stringRequest);
                 }
             });
 
@@ -131,8 +185,8 @@ public class login extends AppCompatActivity {
                 _emailText.setError(null);
             }
 
-            if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-                _passwordText.setError("between 4 and 10 alphanumeric characters");
+            if (password.isEmpty() || password.length() < 10 || password.length() > 40) {
+                _passwordText.setError("between 10 and 40 alphanumeric characters");
                 valid = false;
             } else {
                 _passwordText.setError(null);
