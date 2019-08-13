@@ -66,6 +66,7 @@ android:orientation="vertical">
                             android:src="@drawable/ic_email_black_24dp" />
 
                         <TextView
+                            android:id="@+id/email_profile"
                             android:layout_marginLeft="-20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -94,6 +95,7 @@ android:orientation="vertical">
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="20dp"
+                            android:id="@+id/phone_profile"
                             android:text="+266 225 225"
                             android:textColor="#59adff"
                             android:textStyle="bold" />
@@ -117,6 +119,7 @@ android:orientation="vertical">
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="20dp"
+                            android:id="@+id/address_profile"
                             android:text="Address"
                             android:textColor="#59adff"
                             android:textStyle="bold" />
@@ -141,6 +144,7 @@ android:orientation="vertical">
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="20dp"
                             android:text="work"
+                            android:id="@+id/work_profile"
                             android:textColor="#59adff"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -162,6 +166,7 @@ android:orientation="vertical">
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="20dp"
+                            android:id="@+id/study_profile"
                             android:text="@string/Staudy"
                             android:textColor="#59adff"
                             android:textStyle="bold" />
@@ -183,6 +188,7 @@ android:orientation="vertical">
                         android:textColor="#59adff"
                         android:textStyle="bold" />
                     <ListView
+                        android:id="@+id/list_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -190,6 +196,7 @@ android:orientation="vertical">
                 </LinearLayout>
                 <Button
                     android:layout_width="150dp"
+                    android:id="@+id/massage_profile"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="75dp"
