@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
     private MyPagerAdapter mFragmentAdapter;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    ///////////////////////
+    TextView emil;
+    TextView phone;
+    TextView work;
+    TextView address;
+    TextView study;
+    ListView qalification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        /* Intent intent = new Intent(getApplicationContext(), login.class);
@@ -156,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
                      }
                      else  if(mViewPager.getCurrentItem()==1)
+<<<<<<< HEAD
                      {    final TextView tnameprofile = findViewById(R.id.name_prfile);
                          final TextView temailprofile = findViewById(R.id.email__profile);
                          final TextView tphoneprofile = findViewById(R.id.id_mobile);
@@ -202,6 +211,17 @@ public class MainActivity extends AppCompatActivity {
                                  Map<String,String> params = new HashMap<>();
 
                                  params.put("id_email",id_email);
+=======
+                     {
+                         emil=(TextView)findViewById(R.id.email_profile);
+                         phone=(TextView)findViewById(R.id.phone_profile);
+                         work=(TextView)findViewById(R.id.work_profile);
+                         address=(TextView)findViewById(R.id.address_profile);
+                         study=(TextView)findViewById(R.id.study_profile);
+                         qalification=(ListView)findViewById(R.id.list_profile);
+                         emil.setText("aaaaaaaaaaaaaaaaa");
+
+>>>>>>> origin
 
                                  return params;
                              }
@@ -211,7 +231,28 @@ public class MainActivity extends AppCompatActivity {
                      }
                      else  if(mViewPager.getCurrentItem()==2)
                      {
-
+                         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler_notify);
+                         Itemdata_notify itemdata_noty[]={
+                                 new Itemdata_notify("Mahmoud Tantora","enginring software"),
+                                 new Itemdata_notify("Ammar Kiali","enginring software"),
+                                 new Itemdata_notify("Mohammad Ali","enginring software"),
+                                 new Itemdata_notify("Ali Mahmoud","enginring software"),
+                                 new Itemdata_notify("Ahmad Saeed","enginring software"),
+                                 new Itemdata_notify("Zaeed Al_Ahmad","enginring software"),
+                                 new Itemdata_notify("Abo Baker","enginring software"),
+                                 new Itemdata_notify("Abo Zaeed","enginring software"),
+                                 new Itemdata_notify("Mohmmad Kialy","enginring software"),
+                                 new Itemdata_notify("Khalid Al_Yousf","enginring software"),
+                                 new Itemdata_notify("Maohmmad Al_Aliway","enginring software"),
+                                 new Itemdata_notify("Abd Al_kareem","Syria")
+                         };
+                         //new GridLayoutManager(this,2)
+                         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                         MyAdpter_notify myAdapter=new MyAdpter_notify(itemdata_noty,MainActivity.this);
+                         recyclerView.setAdapter(myAdapter);
+                         recyclerView.setItemAnimator(new DefaultItemAnimator());
+                         dl.closeDrawers();
+                         dl.animate();
                      }
                  }
 
@@ -274,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
                  }
                  else  if(mViewPager.getCurrentItem()==1)
                  {
+<<<<<<< HEAD
                      final TextView tnameprofile = findViewById(R.id.name_prfile);
                      final TextView temailprofile = findViewById(R.id.email__profile);
                      final TextView tphoneprofile = findViewById(R.id.id_mobile);
@@ -326,12 +368,43 @@ public class MainActivity extends AppCompatActivity {
                      };
                      RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                      requestQueue.add(stringRequest);
+=======
+                     emil=(TextView)findViewById(R.id.email_profile);
+                     phone=(TextView)findViewById(R.id.phone_profile);
+                     work=(TextView)findViewById(R.id.work_profile);
+                     address=(TextView)findViewById(R.id.address_profile);
+                     study=(TextView)findViewById(R.id.study_profile);
+                     qalification=(ListView)findViewById(R.id.list_profile);
+                     emil.setText("aaaaaaaaaaaaaaaaa");
+>>>>>>> origin
                  }
                  else  if(mViewPager.getCurrentItem()==2)
                  {
-
+                     RecyclerView recyclerView=(RecyclerView)findViewById(R.id.list_recycler_notify);
+                     Itemdata_notify itemdata_noty[]={
+                             new Itemdata_notify("Mahmoud Tantora","enginring software"),
+                             new Itemdata_notify("Ammar Kiali","enginring software"),
+                             new Itemdata_notify("Mohammad Ali","enginring software"),
+                             new Itemdata_notify("Ali Mahmoud","enginring software"),
+                             new Itemdata_notify("Ahmad Saeed","enginring software"),
+                             new Itemdata_notify("Zaeed Al_Ahmad","enginring software"),
+                             new Itemdata_notify("Abo Baker","enginring software"),
+                             new Itemdata_notify("Abo Zaeed","enginring software"),
+                             new Itemdata_notify("Mohmmad Kialy","enginring software"),
+                             new Itemdata_notify("Khalid Al_Yousf","enginring software"),
+                             new Itemdata_notify("Maohmmad Al_Aliway","enginring software"),
+                             new Itemdata_notify("Abd Al_kareem","Syria")
+                     };
+                     //new GridLayoutManager(this,2)
+                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                     MyAdpter_notify myAdapter=new MyAdpter_notify(itemdata_noty,MainActivity.this);
+                     recyclerView.setAdapter(myAdapter);
+                     recyclerView.setItemAnimator(new DefaultItemAnimator());
+                     dl.closeDrawers();
+                     dl.animate();
                  }
-             }
+                 }
+
 
              @Override
              public void onPageScrollStateChanged(int state) {

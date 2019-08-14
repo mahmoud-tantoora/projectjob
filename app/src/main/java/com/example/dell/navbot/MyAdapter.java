@@ -1,5 +1,6 @@
 package com.example.dell.navbot;
 
+import android.app.UiAutomation;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -80,6 +81,18 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     public void onClick(View v) {
 
                         Toast.makeText(context, "you click on " + itemdata[position].title.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                myViewHolder.massage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                myViewHolder.comment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
                 });
             }
