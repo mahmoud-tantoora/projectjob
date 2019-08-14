@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,11 +35,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -46,12 +49,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import butterknife.BindView;
 
 public class MainActivity extends AppCompatActivity {
     public boolean state=true;
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private String id_email = "17";
     private RequestQueue requestQueue;
     /////////////////
     private MyPagerAdapter mFragmentAdapter;
@@ -148,8 +156,58 @@ public class MainActivity extends AppCompatActivity {
 
                      }
                      else  if(mViewPager.getCurrentItem()==1)
-                     {
+                     {    final TextView tnameprofile = findViewById(R.id.name_prfile);
+                         final TextView temailprofile = findViewById(R.id.email__profile);
+                         final TextView tphoneprofile = findViewById(R.id.id_mobile);
+                         final TextView taddressprofile = findViewById(R.id.id_address_profile);
+                         final TextView tworkprofile = findViewById(R.id.id_work_profile);
+                         final TextView tstudyprofile = findViewById(R.id.id_study_profile);
+                         final TextView tqualificationprofile = findViewById(R.id.id_qualification_profile);
+                        // temailprofile.setText("231311");
+                         String Url = "http://my-app-ammar.000webhostapp.com/get_profile.php";
+                         StringRequest stringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+                           //  @SuppressLint("SetTextI18n")
+                             @Override
+                             public void onResponse(String response) {
+                                 try {
 
+                                    // JSONObject jsonObject = new JSONObject(response);
+                                    // Toast.makeText(getApplicationContext(),jsonObject.getString("email"),Toast.LENGTH_LONG).show();
+
+                                     JSONObject jsonObject = new JSONObject(response);
+
+                                     tnameprofile.setText(jsonObject.getString("email"));
+                                     temailprofile.setText(jsonObject.getString("first_name") +" "+ jsonObject.getString("last_name"));
+                                     tphoneprofile.setText(jsonObject.getString("phone"));
+                                     taddressprofile.setText(jsonObject.getString("address"));
+                                     tworkprofile.setText(jsonObject.getString("type_work"));
+                                     tstudyprofile.setText(jsonObject.getString("studying"));
+                                     tqualificationprofile.setText(jsonObject.getString("name_qualification"));
+
+
+                                 }catch (Exception e)
+                                 {
+                                     Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                                 }
+
+                             }
+                         }, new Response.ErrorListener() {
+                             @Override
+                             public void onErrorResponse(VolleyError error) {
+                                 Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                             }
+                         }){
+                             @Override
+                             protected Map<String, String> getParams() throws AuthFailureError {
+                                 Map<String,String> params = new HashMap<>();
+
+                                 params.put("id_email",id_email);
+
+                                 return params;
+                             }
+                         };
+                         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                         requestQueue.add(stringRequest);
                      }
                      else  if(mViewPager.getCurrentItem()==2)
                      {
@@ -216,7 +274,58 @@ public class MainActivity extends AppCompatActivity {
                  }
                  else  if(mViewPager.getCurrentItem()==1)
                  {
+                     final TextView tnameprofile = findViewById(R.id.name_prfile);
+                     final TextView temailprofile = findViewById(R.id.email__profile);
+                     final TextView tphoneprofile = findViewById(R.id.id_mobile);
+                     final TextView taddressprofile = findViewById(R.id.id_address_profile);
+                     final TextView tworkprofile = findViewById(R.id.id_work_profile);
+                     final TextView tstudyprofile = findViewById(R.id.id_study_profile);
+                     final TextView tqualificationprofile = findViewById(R.id.id_qualification_profile);
+                     //    tnameprofile.setText("asdasdas");
+                     String Url = "http://my-app-ammar.000webhostapp.com/get_profile.php";
+                     StringRequest stringRequest = new StringRequest(Request.Method.POST, Url, new Response.Listener<String>() {
+                         //  @SuppressLint("SetTextI18n")
+                         @Override
+                         public void onResponse(String response) {
+                             try {
 
+                                 //JSONObject jsonObject = new JSONObject(response);
+                                 //Toast.makeText(getApplicationContext(),jsonObject.getString("email"),Toast.LENGTH_LONG).show();
+                                tnameprofile.setText("ddddddd");
+                                 JSONObject jsonObject = new JSONObject(response);
+
+                                 tnameprofile.setText(jsonObject.getString("email"));
+                                 temailprofile.setText(jsonObject.getString("first_name") +" "+ jsonObject.getString("last_name"));
+                                 tphoneprofile.setText(jsonObject.getString("phone"));
+                                 taddressprofile.setText(jsonObject.getString("address"));
+                                 tworkprofile.setText(jsonObject.getString("type_work"));
+                                 tstudyprofile.setText(jsonObject.getString("studying"));
+                                 tqualificationprofile.setText(jsonObject.getString("name_qualification"));
+
+
+                             }catch (Exception e)
+                             {
+                                 Toast.makeText(getApplicationContext(),"something  is error",Toast.LENGTH_LONG).show();
+                             }
+
+                         }
+                     }, new Response.ErrorListener() {
+                         @Override
+                         public void onErrorResponse(VolleyError error) {
+                             Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+                         }
+                     }){
+                         @Override
+                         protected Map<String, String> getParams() throws AuthFailureError {
+                             Map<String,String> params = new HashMap<>();
+
+                             params.put("id_email",id_email);
+
+                             return params;
+                         }
+                     };
+                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                     requestQueue.add(stringRequest);
                  }
                  else  if(mViewPager.getCurrentItem()==2)
                  {
